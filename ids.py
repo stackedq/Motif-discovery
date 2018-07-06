@@ -30,7 +30,7 @@ def is_motif_valid(motif, goal, length):
 def IDS(state, goal, limit=100):
     global global_counter
     if is_motif_valid(state, goal, limit):
-        print_success(OKGREEN + state + ' is a valid motif.' + ENDC)
+        print_success(state + ' is a valid motif.')
         global_counter += 1
         # return state
     neighbor_motifs = [a for a in create_neighbor_motifs(
@@ -53,17 +53,19 @@ def create_neighbor_motifs(motif, length):
             motif += motif_characters[0]
         created_motifs_by_far.append(motif)
         return motif
-    index = motif.find(motif_characters[0])
-    if index == -1:
+    indexes = find_all(motif, motif_characters[0])
+    # print(indexes)
+    if len(indexes) == 0:
         return [-1]
     neighbor_motifs = []
-    for char in motif_characters:
-        s = list(motif)
-        s[index] = char
-        new_motif = "".join(s)
-        if handled_previously(new_motif) != True:
-            created_motifs_by_far.append(new_motif)
-            neighbor_motifs.append(new_motif)
+    for index in indexes:
+        for char in motif_characters:
+            s = list(motif)
+            s[index] = char
+            new_motif = "".join(s)
+            if handled_previously(new_motif) != True:
+                created_motifs_by_far.append(new_motif)
+                neighbor_motifs.append(new_motif)
     return neighbor_motifs
 
 
@@ -78,8 +80,12 @@ def get_nth_substrings(length, string):
     return substrings
 
 
+st = start_time()
 discover_motifs(input_motif_length, input_hamming_distance)
 if global_counter > 0:
-    print_success(str(global_counter) + ' with the length of ' + str(input_motif_length) + ' found.')
+    print_success(str(global_counter) + ' motif with the length of ' +
+                  str(input_motif_length) + ' found.')
 else:
-    print_error('No motifs with length of ' + str(input_motif_length) + ' were found.')
+    print_error('No motifs with length of ' +
+                str(input_motif_length) + ' were found.')
+end_time(st)

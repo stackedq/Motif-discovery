@@ -1,7 +1,7 @@
 from common import *
 import random
 
-maximum_restarts = 100
+maximum_restarts = 50
 
 
 def generate_random_potential_motif():
@@ -77,21 +77,20 @@ def check_motif_fitness_score_and_validation(motif):
 
 
 def start_hill_climbing():
-    answers = 0
+    answers = []
     for i in range(0, maximum_restarts):
         motif, fitness, is_valid = check_motif_fitness_score_and_validation(
             generate_random_potential_motif())
-        if is_valid:
-            print(motif + '\n')
-        if is_valid == True and (fitness / len(input_strings) < input_hamming_distance):
-            answers += 1
-            print_success(
-                motif + ' is a discovered motif with score of ' + map_fitness_to_number(fitness))
+        if is_valid == True:
+            if not motif in answers:
+                answers.append(motif)
+                print_success(
+                    motif + ' is a discovered motif with score of ' + map_fitness_to_number(fitness))
         else:
             print_warning(motif + ' is not a motif because of ' +
                           str(fitness) + ' hamming distance.')
-    if answers > 0:
-        print_success(str(answers) + ' with length of ' +
+    if len(answers) > 0:
+        print_success(str(len(answers)) + ' motif(s) with length of ' +
                       str(input_motif_length) + ' motifs were discovered.')
     else:
         print_error('No motifs with length of ' +
@@ -99,11 +98,9 @@ def start_hill_climbing():
 
 
 def map_fitness_to_number(fitness):
-    return str(int(100 - (fitness / len(input_strings) * 100)))
+    return str(int(100 - (fitness / (len(input_strings) + 1) * 100)))
 
 
-def call_out_answer(motif):
-    print_success(motif + ' is an answer.')
-
-
+st = start_time()
 start_hill_climbing()
+end_time(st)

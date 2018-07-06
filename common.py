@@ -1,3 +1,5 @@
+import time
+import re
 
 input_strings = [
     'ggctaggctgaagcgatgattcgccggactggaacactgcatccgtccatataaccgctcttcgtccccatatcccgtcaatagaaactgacagccttaa',
@@ -6,7 +8,7 @@ input_strings = [
     'gggcagggacgtaccatggtaagacgagaatataggccgcatgctacacaaccccaatacgtaggttatatggcggcatggcgtaatattccgtgtactg'
 ]
 
-input_motif_length = 6
+input_motif_length = 7
 input_hamming_distance = 1
 motif_characters = ['a', 'c', 'g', 't']
 
@@ -24,3 +26,12 @@ def print_error(string):
 
 def print_warning(string):
     print(WARNING + string + ENDC)
+
+def start_time():
+    return time.clock()
+
+def end_time(start_time):
+    print('- Done in: ' + str(time.clock() - start_time) + ' seconds.')
+
+def find_all(string, sub):
+    return [m.start() for m in re.finditer(sub, string)]
