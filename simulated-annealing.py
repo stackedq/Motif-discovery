@@ -2,21 +2,8 @@ import common
 import random
 import math
 
-maximum_restarts = 1000
+maximum_restarts = 3000
 all_created_motifs = []
-
-
-def generate_adjecent_motif(motif):
-    this_motif_characters = list(motif)
-    random_index = random.randint(0, len(motif) - 1)
-    random_char = random.choice(common.motif_characters)
-    while motif[random_index] == random_char:
-        random_char = random.choice(common.motif_characters)
-    this_motif_characters[random_index] = random_char
-    generated_motif = "".join(this_motif_characters)
-    if generated_motif in all_created_motifs:
-        return generate_adjecent_motif(motif)
-    return generated_motif
 
 
 def calculate_minimum_hamming_distance(motif, string):
@@ -53,7 +40,7 @@ def start_simulate_annealing():
         print('current_motif:', motif)
         if temperature == 0:
             return motif
-        next_motif = generate_adjecent_motif(motif)
+        next_motif = common.generate_adjecent_motif(motif)
         print('adjecent_motif:', next_motif)
         delta_fitness = calculate_fitness_score(
             next_motif) - calculate_fitness_score(motif)

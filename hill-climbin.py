@@ -4,16 +4,6 @@ import random
 maximum_restarts = 50
 
 
-def generate_adjecent_motif(motif):
-    this_motif_characters = list(motif)
-    random_index = random.randint(0, len(motif) - 1)
-    random_char = random.choice(common.motif_characters)
-    while motif[random_index] == random_char:
-        random_char = random.choice(common.motif_characters)
-    this_motif_characters[random_index] = random_char
-    return "".join(this_motif_characters)
-
-
 def calculate_minimum_hamming_distance(motif, string):
     string_motifs = common.get_nth_substrings(
         common.input_motif_length, string)
@@ -41,7 +31,7 @@ def check_motif_fitness_score_and_validation(motif):
     this_motif_fitness_score, is_motif_valid = calculate_fitness_score(motif)
     next_motif = motif
     for i in range(0, maximum_restarts):
-        adjecent_motif = generate_adjecent_motif(motif)
+        adjecent_motif = common.generate_adjecent_motif(motif)
         adjecent_motif_fitness_score, adjecent_valid = calculate_fitness_score(
             adjecent_motif)
         if adjecent_motif_fitness_score < this_motif_fitness_score:

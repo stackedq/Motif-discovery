@@ -12,6 +12,7 @@ input_strings = [
 input_motif_length = 7
 input_hamming_distance = 1
 motif_characters = ['a', 'c', 'g', 't']
+all_created_motifs=[]
 
 class tcolors:
     OKGREEN = '\033[92m'
@@ -81,3 +82,16 @@ def is_motif_valid(motif, goal=input_hamming_distance, length=input_motif_length
         if validate_by_hamming_distance(string, motif, goal, length) == False:
             valid = False
     return valid
+
+
+def generate_adjecent_motif(motif):
+    this_motif_characters = list(motif)
+    random_index = random.randint(0, len(motif) - 1)
+    random_char = random.choice(motif_characters)
+    while motif[random_index] == random_char:
+        random_char = random.choice(motif_characters)
+    this_motif_characters[random_index] = random_char
+    generated_motif = "".join(this_motif_characters)
+    if generated_motif in all_created_motifs:
+        return generate_adjecent_motif(motif)
+    return generated_motif
