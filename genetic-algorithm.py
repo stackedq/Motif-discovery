@@ -24,6 +24,9 @@ def generate_initial_population(size):
         population.append(common.generate_random_potential_motif())
     return population
 
+def get_random_from_population(population):
+    random_index = random.randint(0, len(population) - 1)
+    return population[random_index]
 
 def implement_genetic_algorithm():
     ga_time = common.start_time()
@@ -33,8 +36,8 @@ def implement_genetic_algorithm():
     while not done:
         new_population = []
         for i in range(0, len(population)):
-            random_motif_dad = common.generate_random_potential_motif()
-            random_motif_mom = common.generate_random_potential_motif()
+            random_motif_dad = get_random_from_population(population)
+            random_motif_mom = get_random_from_population(population)
             motif_child = reproduce(random_motif_mom, random_motif_dad)
             print(motif_child + ' is children of ' + random_motif_mom +
                   ' and ' + random_motif_dad + '!', end='\r')
