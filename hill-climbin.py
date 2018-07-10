@@ -31,17 +31,21 @@ def check_motif_fitness_score_and_validation(motif):
     this_motif_fitness_score, is_motif_valid = calculate_fitness_score(motif)
     next_motif = motif
     for i in range(0, maximum_restarts):
+        print(motif)
         adjecent_motif = common.generate_adjecent_motif(motif)
+        print(adjecent_motif)
         adjecent_motif_fitness_score, adjecent_valid = calculate_fitness_score(
             adjecent_motif)
+        print('Adjecent motif fitness score:', adjecent_motif_fitness_score)
         if adjecent_motif_fitness_score < this_motif_fitness_score:
             print(adjecent_motif + ' is better than ' + next_motif + ' with ' +
-                  str(this_motif_fitness_score - adjecent_motif_fitness_score) + ' scores.', end="\r")
+                  str(this_motif_fitness_score - adjecent_motif_fitness_score) + ' scores.')
             next_motif = adjecent_motif
             break
     if next_motif == motif:
         return motif, this_motif_fitness_score, is_motif_valid
     else:
+        print('Going to adjecent motif.\n\n')
         return check_motif_fitness_score_and_validation(next_motif)
 
 
@@ -52,12 +56,13 @@ def start_hill_climbing():
             common.generate_random_potential_motif())
         if is_valid == True:
             if not motif in answers:
+                print('\n')
                 answers.append(motif)
                 common.print_success(
                     motif + ' is a discovered motif with score of ' + map_fitness_to_number(fitness))
         else:
             common.print_warning(motif + ' is not a motif because of ' +
-                                 str(fitness) + ' hamming distance.')
+                                 map_fitness_to_number(fitness) + ' fitness score.')
     if len(answers) > 0:
         common.print_success(str(len(answers)) + ' motif(s) with length of ' +
                              str(common.input_motif_length) + ' motifs were discovered.')
@@ -67,7 +72,7 @@ def start_hill_climbing():
 
 
 def map_fitness_to_number(fitness):
-    return str(int(100 - (fitness / (len(common.input_strings) + 1) * 100)))
+    return str(int((common.input_motif_length * len(common.input_strings)) - (fitness / (len(common.input_strings) + 1))))
 
 
 st = common.start_time()

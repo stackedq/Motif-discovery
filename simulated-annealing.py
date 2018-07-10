@@ -2,7 +2,7 @@ import common
 import random
 import math
 
-maximum_restarts = 3000
+maximum_restarts = 100
 all_created_motifs = []
 
 
@@ -23,7 +23,7 @@ def calculate_fitness_score(motif):
     for string in common.input_strings:
         string_score = calculate_minimum_hamming_distance(motif, string)
         fitness_score += string_score
-    return 0 - fitness_score
+    return common.input_motif_length * len(common.input_strings) - fitness_score
 
 
 def start_simulate_annealing():
@@ -56,8 +56,8 @@ def start_simulate_annealing():
                 print('Goin down B)')
 
 
-def map_fitness_to_number(fitness):
-    return 100 - (fitness / (len(common.input_strings) + 1) * 100)
+def get_fitness_score_percentage(motif):
+    return calculate_fitness_score(motif) / (common.input_motif_length * len(common.input_strings))
 
 
 st = common.start_time()
@@ -66,4 +66,5 @@ if common.is_motif_valid(answer) == True:
     common.print_success(answer + ' is a valid motif.')
 else:
     common.print_error(answer + ' is not a valid motif.')
+    common.print_warning('fitness score is: ' + str(get_fitness_score_percentage(answer)))
 common.end_time(st)
